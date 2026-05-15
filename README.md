@@ -64,4 +64,4 @@ Titanic_Project/
 
 ## Author
 
-Deepika
+Astha Shanbhag
