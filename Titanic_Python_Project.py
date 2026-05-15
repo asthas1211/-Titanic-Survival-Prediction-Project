@@ -2,7 +2,6 @@
 # Load the dataset using pandas and display the first 10 rows.
 import pandas as pd
 from pandas import value_counts
-
 df=pd.read_excel("Titanic_Project.xlsx")
 print(df.head(3))
 # How many passengers are in the dataset?
@@ -10,7 +9,6 @@ k=df["Name"].count()
 print(k)
 h=len(df)
 print(h)
-
 # What are the data types of each column?
 print(df.info())
 # How many missing values are there in each column?
@@ -20,8 +18,6 @@ print(f)
 g=df.groupby("Name")["Survived"].sum()
 print(df["Survived"].sum())
 print(g)
-
-
 # 🟡 Intermediate (Data Analysis)
 # What is the survival rate by gender?
 f=df.groupby("Sex")["Survived"].mean()
@@ -71,7 +67,6 @@ print(df)
 # Create a pivot table showing survival rate by Sex and Pclass.
 x=pd.pivot_table(df,index="Sex",values="Survived",columns="Pclass")
 print(x)
-
 # Identify correlations between numerical variables.
 s=df.corr(numeric_only=True)
 print(s)
@@ -83,7 +78,6 @@ df_ml=df.copy()
 df_ml=df_ml.drop(["Name","PassengerId"],axis=1)
 print(df_ml.head())
 df_ml["Sex"]=df_ml["Sex"].map({"male":0,"female":1})
-
 X=df_ml.drop("Survived",axis=1)
 y=df_ml["Survived"]
 X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
@@ -97,53 +91,34 @@ X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42
 # model.fit(X_train,y_train)
 # y_pred=model.predict(X_test)#prediction
 # Build a logistic regression model to predict survival.
-
-
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import  LogisticRegression
 df_ml = df.copy()
-
-
 # Drop unwanted columns
 df_ml.drop(["Name", "PassengerId", "Age_Group"], axis=1, inplace=True, errors="ignore")
-
-
 # Convert categorical
 #df_ml["Sex"] = df_ml["Sex"].map({"male": 0, "female": 1})
 #df_ml = pd.get_dummies(df_ml, columns=["Embarked"], drop_first=True)
-
-
 # Convert True/False to int (safe way)
 df_ml["Embarked_Q"] = df_ml["Embarked_Q"].astype(int)
 df_ml["Embarked_S"] = df_ml["Embarked_S"].astype(int)
-
-
 # Fill missing values
 df_ml.fillna({"Age":df_ml["Age"].median()}, inplace=True)
-
-
 # Final check
 #print(df_ml.isnull().sum())
 X = df_ml.drop("Survived", axis=1)
 y = df_ml["Survived"]
-
-
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(
    X, y, test_size=0.2, random_state=42
 )
-
-
 from sklearn.linear_model import LogisticRegression
 model = LogisticRegression(max_iter=1000)
 model.fit(X_train, y_train)
-
-
 from sklearn.metrics import accuracy_score
 y_pred = model.predict(X_test)
 print("Accuracy:", accuracy_score(y_test, y_pred))
-
 # 💡 Bonus (Visualization)
 # Plot survival count by gender.
 g=df.groupby("Sex")["Survived"].sum()
